@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: hello-app
 spec:
-  replicas: 5 # <--- הנה ה-5 רפליקות שלנו!
+  replicas: 2 # <--- הנה ה-5 רפליקות שלנו!
   selector:
     matchLabels:
       app: hello-app
