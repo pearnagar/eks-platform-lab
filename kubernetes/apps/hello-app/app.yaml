@@ -6,11 +6,11 @@ spec:
   replicas: 5 # <--- הנה ה-5 רפליקות שלנו!
   selector:
     matchLabels:
-      app: hello
+      app: hello-app
   template:
     metadata:
       labels:
-        app: hello
+        app: hello-app
     spec:
       containers:
       - name: hello-app
@@ -25,7 +25,7 @@ metadata:
   name: hello-service
 spec:
   selector:
-    app: hello
+    app: hello-app
   ports:
   - port: 80
     targetPort: 8080
