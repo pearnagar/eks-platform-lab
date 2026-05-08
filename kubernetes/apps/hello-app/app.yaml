@@ -1,13 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-app
+spec:
+  replicas: 5 # <--- הנה ה-5 רפליקות שלנו!
+  selector:
+    matchLabels:
+      app: hello
+  template:
+    metadata:
+      labels:
+        app: hello
+    spec:
+      containers:
+      - name: hello-app
+        image: paulbouwer/hello-kubernetes:1.10
+        ports:
+        - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-service
+spec:
+  selector:
+    app: hello
+  ports:
+  - port: 80
+    targetPort: 8080
+
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: hello-ingress
-  annotations: # <-- קוראים לרובוט התעודות
+  annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   ingressClassName: nginx
   rules:
-  - host: hello.3.211.120.10.nip.io # <-- הדומיין החדש של האפליקציה
+  - host: hello.3.211.120.10.nip.io
     http:
       paths:
       - path: /
@@ -17,7 +50,7 @@ spec:
             name: hello-service
             port:
               number: 80
-  tls: # <-- מבקשים לשמור את התעודה בכספת
+  tls:
   - hosts:
     - hello.3.211.120.10.nip.io
     secretName: hello-tls-secret
